@@ -25,13 +25,10 @@ Following are some network representations:
         sudo apt-get install texlive-latex-extra
         ```
 
-    * Ubuntu 18.04.2
+    * Ubuntu 18.04.2, 20.04
 Base on this [website](https://gist.github.com/rain1024/98dd5e2c6c8c28f9ea9d), please install the following packages.
         ```
-        sudo apt-get install texlive-latex-base
-        sudo apt-get install texlive-fonts-recommended
-        sudo apt-get install texlive-fonts-extra
-        sudo apt-get install texlive-latex-extra
+        sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
         ```
 
     * Windows
