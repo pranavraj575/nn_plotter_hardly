@@ -82,41 +82,51 @@ def to_generic(name, obj='Box',
 
 # Conv
 def to_Conv(name,
-            s_filer=256, n_filer=64,
+            zlabel=None, xlabel=None,
             offset="(0,0,0)", to="(0,0,0)",
             width=1, height=40,
             depth=40, caption=" ",
+            fill=r'\ConvColor',
+            **kwargs,
             ):
     return to_generic(name=name,
                       obj='Box',
-                      fill=r'\ConvColor',
-                      xlabel=n_filer,
-                      zlabel=s_filer,
+                      fill=fill,
+                      xlabel=xlabel,
+                      zlabel=zlabel,
                       offset=offset,
                       to=to,
                       height=height,
                       width=width,
                       depth=depth,
                       caption=caption,
+                      **kwargs,
                       )
 
 
 # Conv,Conv,relu
 # Bottleneck
-def to_ConvConvRelu(name, s_filer=256, n_filer=(64, 64), offset="(0,0,0)", to="(0,0,0)", width=2, height=40,
-                    depth=40, caption=" "):
-    if type(n_filer) != tuple and type(width) != tuple:
-        n_filer = (n_filer,)
+def to_ConvConvRelu(name,
+                    zlabel=None, xlabel=None,
+                    offset="(0,0,0)", to="(0,0,0)",
+                    height=40, width=2, depth=40,
+                    caption=" ",
+                    **kwargs,
+                    ):
+    if type(width) != tuple:
         width = (width,)
-    if type(n_filer) == tuple and type(width) != tuple:
-        width = tuple(width for _ in n_filer)
-    if type(width) == tuple and type(n_filer) != tuple:
-        n_filer = tuple(n_filer for _ in width)
+    if xlabel is not None:
+        if type(xlabel) != tuple:
+            xlabel = (xlabel,)
+        if type(xlabel) == tuple and type(width) != tuple:
+            width = tuple(width for _ in xlabel)
+        if type(width) == tuple and type(xlabel) != tuple:
+            xlabel = tuple(xlabel for _ in width)
 
     return to_generic(name=name,
                       obj='RightBandedBox',
-                      xlabel=", ".join(str(x) for x in n_filer),
-                      zlabel=s_filer,
+                      xlabel=None if xlabel is None else ", ".join(str(x) for x in xlabel) ,
+                      zlabel=zlabel,
                       offset=offset,
                       to=to,
                       height=height,
@@ -125,16 +135,21 @@ def to_ConvConvRelu(name, s_filer=256, n_filer=(64, 64), offset="(0,0,0)", to="(
                       caption=caption,
                       fill=r'\ConvColor',
                       bandfill=r'\ConvReluColor',
+                      **kwargs,
                       )
 
 
 # Pool
-def to_Pool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32, opacity=0.5, caption=" ",
-            **kwargs, ):
+def to_Pool(name,
+            offset="(0,0,0)", to="(0,0,0)",
+            height=32, width=1, depth=32,
+            opacity=0.5,
+            caption=" ",
+            **kwargs,
+            ):
     return to_generic(name, obj='Box',
                       offset=offset, to=to,
                       fill=r'\PoolColor',
-                      xlabel=None, ylabel=None, zlabel=None,
                       width=width, height=height, depth=depth,
                       caption=caption,
                       opacity=opacity,
@@ -197,8 +212,13 @@ def to_ConvSoftMax(name, s_filer=40, offset="(0,0,0)", to="(0,0,0)", width=1, he
 
 
 # SoftMax
-def to_SoftMax(name, s_filer=10, offset="(0,0,0)", to="(0,0,0)", width=1.5, height=3, depth=25, opacity=0.8,
-               caption=" "):
+def to_SoftMax(name,
+               s_filer=10,
+               offset="(0,0,0)", to="(0,0,0)",
+               height=3, width=1.5, depth=25,
+               opacity=0.8,
+               caption=" ",
+               **kwargs, ):
     return to_generic(name=name,
                       obj='Box',
                       offset=offset,
@@ -211,9 +231,16 @@ def to_SoftMax(name, s_filer=10, offset="(0,0,0)", to="(0,0,0)", width=1.5, heig
                       depth=depth,
                       caption=caption,
                       opacity=opacity,
+                      **kwargs,
                       )
 
-def to_Sum(name, offset="(0,0,0)", to="(0,0,0)", radius=2.5, opacity=0.6):
+
+def to_Sum(name,
+           offset="(0,0,0)", to="(0,0,0)",
+           radius=2.5,
+           opacity=0.6,
+           **kwargs,
+           ):
     return to_generic(name=name,
                       obj='Ball',
                       offset=offset,
@@ -222,7 +249,9 @@ def to_Sum(name, offset="(0,0,0)", to="(0,0,0)", radius=2.5, opacity=0.6):
                       logo='$+$',
                       opacity=opacity,
                       radius=radius,
+                      **kwargs,
                       )
+
 
 def to_connection(of, to):
     return r"""
