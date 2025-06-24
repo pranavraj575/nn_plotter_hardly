@@ -257,7 +257,14 @@ def to_connection(of, to):
     return r"""
 \draw [connection]  (""" + of + r"""-east)    -- node {\midarrow} (""" + to + """-west);
 """
-
+def to_dotted_diags(of,to):
+    return r"""
+\draw[densely dashed]
+    ("""+of+"""-nearnortheast) - - ("""+to+"""-nearnorthwest)
+    ("""+of+"""-nearsoutheast) - - ("""+to+"""-nearsouthwest)
+    ("""+of+"""-farsoutheast) - - ("""+to+"""-farsouthwest)
+    ("""+of+"""-farnortheast) - - ("""+to+"""-farnorthwest)
+;"""
 
 def to_skip(of, to, pos=1.25):
     return r"""
