@@ -22,8 +22,8 @@ arch = [
     to_Conv("invis",
             offset="(-2,0,0)", to="(0,0,0)",
             width=.1, height=len_map(240), depth=len_map(320),
-            # caption="Input Optic Flow",
-            fill='{rgb:red,1;black,0.3}'
+            opacity=0,
+            invisible=True,
             ),
     to_input(pathfile=os.path.join(os.path.dirname(__file__), 'optic_flow_107.png'),
              to='(invis-east)', name='opticflow', height=len_map(240, img=True), width=len_map(320, img=True)),
@@ -36,7 +36,7 @@ arch = [
 
     to_dotted_diags('invis', 'conv1'),
     to_Pool("pool1", xlabel=3, ylabel=60, zlabel='~'*8 + str(80),
-            offset="(1,0,0)", to="(conv1-east)",
+            offset="(1.5,0,0)", to="(conv1-east)",
             height=len_map(60), depth=len_map(80), width=len_map(3),
             caption="MaxPool",
             ),
@@ -74,10 +74,17 @@ arch = [
     to_Conv("output", zlabel=2,
             offset="(2,0,0)", to="(linear-east)",
             width=len_map(0), height=len_map(0), depth=len_map(2),
+            caption='Output',
             # caption="\\hspace{-20 pt}\mbox{Output}",
             ),
     to_connection("linear", "output"),
 
+    to_Conv("invis2",
+            offset="(.5,0,0)", to="(output-east)",
+            width=1, height=1, depth=1,
+            opacity=0,
+            invisible=True,
+            ),
     # to_ConvConvRelu("conv3", to='(pool2-east)', n_filer=64, width=2),
     # to_SoftMax("soft1", 10, "(3,0,0)", "(conv3-east)", caption="SOFT"),
     to_end()

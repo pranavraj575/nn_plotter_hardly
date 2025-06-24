@@ -52,6 +52,7 @@ def to_generic(name, obj='Box',
                xlabel=None, ylabel=None, zlabel=None,
                width=None, height=None, depth=None,
                caption=None,
+               invisible=False,
                **kwargs
                ):
     bounded = ['xlabel', ]
@@ -66,7 +67,7 @@ def to_generic(name, obj='Box',
     kwargs['zlabel'] = zlabel
 
     s = r"""
-\pic[shift={""" + offset + """}] at """ + to + """
+\pic[shift={""" + offset + "},"+('draw=none,opacity=0,' if invisible else '')+"] at " + to + """
     {""" + obj + """={
         name=""" + name + """,
         caption=""" + caption + ",\n"
@@ -87,6 +88,7 @@ def to_Conv(name,
             width=1, height=40,
             depth=40, caption=" ",
             fill=r'\ConvColor',
+            invisible=False,
             **kwargs,
             ):
     return to_generic(name=name,
@@ -100,6 +102,7 @@ def to_Conv(name,
                       width=width,
                       depth=depth,
                       caption=caption,
+                      invisible=invisible,
                       **kwargs,
                       )
 
