@@ -11,14 +11,16 @@ def len_map(dim, img=False):
         factor = .21
     else:
         factor = 1
-    return np.clip(factor*np.power(dim, .5)*1.5, 1, 69)
+    return np.clip(factor*np.power(dim, .5)*1.5, .69, 36.9)
 
 
 # defined your arch
-shift = 4
-p = .9
+shift = 3.9
+p = .5
 goal_vec_len = 4
 q = 1 - p
+keys=('front','bottom')
+#keys=('front',)
 arch = [
            to_head('..'),
            to_cor(),
@@ -52,7 +54,7 @@ arch = [
                 ),
         to_dotted_diags('conv1' + typ, 'pool1' + typ),
         to_ConvConvRelu("conv2" + typ,
-                        offset="(1.5,0,0)", to="(pool1" + typ + "-east)",
+                        offset="(1.25,0,0)", to="(pool1" + typ + "-east)",
                         width=len_map(16), height=len_map(19), depth=len_map(26),
                         caption="{CNN+ReLU}" if typ == 'front' else ' ',
                         **(dict(xlabel=16, ylabel=19, zlabel='~'*4 + str(26), ) if typ == 'front' else dict()),
@@ -79,7 +81,7 @@ arch = [
         to_dotted_diags('pool2' + typ, 'flatten' + typ),
 
         to_Conv("concat" + typ, zlabel='~'*8 + str(1872*2 + goal_vec_len) if typ == 'bottom' else ' ',
-                offset="(5," +
+                offset="(2.5," +
                        str((-q if typ == 'front' else p)*shift) + "," +
                        str(.1*(-1 if typ == 'front' else 1)*len_map(1872)) + ")",
                 to="(flatten" + typ + "-east)",
@@ -89,7 +91,7 @@ arch = [
                 **(dict() if typ == 'front' else dict()),
                 ),
         to_dotted_diags('flatten' + typ, 'concat' + typ),
-    ] for typ in ('front', 'bottom')], []
+    ] for typ in keys], []
 ) + [
            to_Conv("goal",
                    offset="(0," + str(.69*shift) + ",0)", to='(conv1front-north)',
@@ -105,10 +107,9 @@ arch = [
                    ),
            to_dotted_diags('goal', 'goal2'),
        ] + [
-
            to_ConvConvRelu("linear", zlabel='~'*8 + str(64),
                            offset="(1,0,0)", to="(concat" + 'front' + "-neareast)",
-                           width=len_map(0), height=len_map(0), depth=len_map(64),
+                           width=tuple([len_map(0) for _ in range(1)]), height=len_map(0), depth=len_map(64),
                            caption="{Linear+Tanh}",
                            ),
            to_connection("concat" + 'front' + '-neareast', "linear" + '-west'),
@@ -121,8 +122,12 @@ arch = [
                    ),
            to_connection("linear" + '-east', "output" + '-west'),
 
-           # to_ConvConvRelu("conv3", to='(pool2-east)', n_filer=64, width=2),
-           # to_SoftMax("soft1", 10, "(3,0,0)", "(conv3-east)", caption="SOFT"),
+           to_Conv("invis2",
+                   offset="(.25,0,0)", to="(output-east)",
+                   width=1, height=1, depth=1,
+                   opacity=0,
+                   invisible=True,
+                   ),
            to_end()
        ]
 
