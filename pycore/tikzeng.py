@@ -55,6 +55,12 @@ def to_generic(name, obj='Box',
                invisible=False,
                **kwargs
                ):
+    """
+    :param invisible: removes bordering lines
+        if you want a fully invisible box, make sure opacity=0 is in kwargs
+    :param kwargs:
+    :return:
+    """
     bounded = ['xlabel', ]
     kwargs['name'] = name
     kwargs['caption'] = caption
@@ -65,9 +71,8 @@ def to_generic(name, obj='Box',
     kwargs['xlabel'] = xlabel
     kwargs['ylabel'] = ylabel
     kwargs['zlabel'] = zlabel
-
     s = r"""
-\pic[shift={""" + offset + "},"+('draw=none,opacity=0,' if invisible else '')+"] at " + to + """
+\pic[shift={""" + offset + "}," + ('draw=none,opacity=0,' if invisible else '') + "] at " + to + """
     {""" + obj + """={
         name=""" + name + """,
         caption=""" + caption + ",\n"
@@ -128,7 +133,7 @@ def to_ConvConvRelu(name,
 
     return to_generic(name=name,
                       obj='RightBandedBox',
-                      xlabel=None if xlabel is None else ", ".join(str(x) for x in xlabel) ,
+                      xlabel=None if xlabel is None else ", ".join(str(x) for x in xlabel),
                       zlabel=zlabel,
                       offset=offset,
                       to=to,
@@ -260,14 +265,17 @@ def to_connection(of, to):
     return r"""
 \draw [connection]  (""" + of + r"""-east)    -- node {\midarrow} (""" + to + """-west);
 """
-def to_dotted_diags(of,to):
+
+
+def to_dotted_diags(of, to):
     return r"""
 \draw[densely dashed]
-    ("""+of+"""-nearnortheast) - - ("""+to+"""-nearnorthwest)
-    ("""+of+"""-nearsoutheast) - - ("""+to+"""-nearsouthwest)
-    ("""+of+"""-farsoutheast) - - ("""+to+"""-farsouthwest)
-    ("""+of+"""-farnortheast) - - ("""+to+"""-farnorthwest)
+    (""" + of + """-nearnortheast) - - (""" + to + """-nearnorthwest)
+    (""" + of + """-nearsoutheast) - - (""" + to + """-nearsouthwest)
+    (""" + of + """-farsoutheast) - - (""" + to + """-farsouthwest)
+    (""" + of + """-farnortheast) - - (""" + to + """-farnorthwest)
 ;"""
+
 
 def to_skip(of, to, pos=1.25):
     return r"""
