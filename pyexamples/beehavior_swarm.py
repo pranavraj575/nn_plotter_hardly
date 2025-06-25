@@ -14,6 +14,8 @@ def len_map(dim, img=False):
     return np.clip(factor*np.power(dim, .5)*1.5, 1, 69)
 
 
+initial_img_channels = 6
+
 # defined your arch
 arch = [
     to_head('..'),
@@ -28,17 +30,17 @@ arch = [
             ),
     to_input(pathfile=os.path.join(os.path.dirname(__file__), 'optic_flow_107.png'),
              to='(invis-east)', name='opticflow', height=len_map(240, img=True), width=len_map(320, img=True)),
-    to_Conv("conv1", xlabel=3, ylabel=240, zlabel='~'*8 + str(320),
+    to_Conv("conv1", xlabel=initial_img_channels, ylabel=240, zlabel='~'*8 + str(320),
             offset="(2,0,0)", to="(invis-east)",
-            width=len_map(3), height=len_map(240), depth=len_map(320),
+            width=len_map(initial_img_channels), height=len_map(240), depth=len_map(320),
             # caption="Input Optic Flow",
             fill='{rgb:red,1;black,0.3}'
             ),
 
     to_dotted_diags('invis', 'conv1'),
-    to_Pool("pool1", xlabel=3, ylabel=60, zlabel='~'*8 + str(80),
+    to_Pool("pool1", xlabel=initial_img_channels, ylabel=60, zlabel='~'*8 + str(80),
             offset="(1.5,0,0)", to="(conv1-east)",
-            height=len_map(60), depth=len_map(80), width=len_map(3),
+            height=len_map(60), depth=len_map(80), width=len_map(initial_img_channels),
             caption="MaxPool",
             ),
     to_dotted_diags('conv1', 'pool1'),
@@ -47,7 +49,7 @@ arch = [
                     width=len_map(16), height=len_map(19), depth=len_map(26),
                     caption="{CNN+ReLU}",
                     ),
-    to_connection("pool1", "conv2"),
+    to_connection("pool1-east", "conv2-west"),
 
     to_Pool("pool2", xlabel=16, ylabel=9, zlabel='~'*4 + str(13),
             offset="(0.5,0,0)", to="(conv2-east)",
@@ -70,7 +72,7 @@ arch = [
                     width=len_map(0), height=len_map(0), depth=len_map(64),
                     caption="{Linear+Tanh}",
                     ),
-    to_connection("flatten", "linear"),
+    to_connection("flatten-east", "linear-west"),
 
     to_Conv("output", zlabel=2,
             offset="(2,0,0)", to="(linear-east)",
@@ -78,7 +80,7 @@ arch = [
             caption='Output',
             # caption="\\hspace{-20 pt}\mbox{Output}",
             ),
-    to_connection("linear", "output"),
+    to_connection("linear-east", "output-west"),
 
     to_Conv("invis2",
             offset="(.5,0,0)", to="(output-east)",

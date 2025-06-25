@@ -18,9 +18,10 @@ def len_map(dim, img=False):
 shift = 3.9
 p = .5
 goal_vec_len = 4
+initial_img_channels = 6
 q = 1 - p
-keys=('front','bottom')
-#keys=('front',)
+keys = ('front', 'bottom')
+# keys=('front',)
 arch = [
            to_head('..'),
            to_cor(),
@@ -39,18 +40,20 @@ arch = [
 
         to_Conv("conv1" + typ,
                 offset="(2,0,0)", to='(invis' + typ + '-east)',
-                width=len_map(3), height=len_map(240), depth=len_map(320),
+                width=len_map(initial_img_channels), height=len_map(240), depth=len_map(320),
                 fill='{rgb:' + ('red' if typ == 'front' else 'blue') + ',1;black,0.3}',
-                **(dict(xlabel=3, ylabel=240, zlabel='~'*8 + str(320), ) if typ == 'front' else dict()),
+                **(dict(xlabel=initial_img_channels, ylabel=240,
+                        zlabel='~'*8 + str(320), ) if typ == 'front' else dict()),
                 ),
 
         to_dotted_diags('invis' + typ, 'conv1' + typ),
         to_Pool("pool1" + typ,
                 offset="(1.5,0,0)", to="(conv1" + typ + "-east)",
-                height=len_map(60), depth=len_map(80), width=len_map(3),
+                height=len_map(60), depth=len_map(80), width=len_map(initial_img_channels),
                 caption="MaxPool" if typ == 'front' else ' ',
                 fill='{rgb:' + ('red' if typ == 'front' else 'blue') + ',1;black,0.3}',
-                **(dict(xlabel=3, ylabel=60, zlabel='~'*8 + str(80), ) if typ == 'front' else dict()),
+                **(dict(xlabel=initial_img_channels, ylabel=60,
+                        zlabel='~'*8 + str(80), ) if typ == 'front' else dict()),
                 ),
         to_dotted_diags('conv1' + typ, 'pool1' + typ),
         to_ConvConvRelu("conv2" + typ,
