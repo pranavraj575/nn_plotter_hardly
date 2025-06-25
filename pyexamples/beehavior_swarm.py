@@ -20,17 +20,18 @@ arch = [
     to_cor(),
     to_begin(),
     to_Conv("invis",
-            offset="(-2,0,0)", to="(0,0,0)",
-            width=.1, height=len_map(240), depth=len_map(320),
+            offset="(0,0,0)", to="(0,0,0)",
+            width=.00069, height=len_map(240), depth=len_map(320),
             opacity=0,
-            invisible=True,
+            invisible=False,  # so that caption is visible
+            caption="\\mbox{Front Optic Flow}",
             ),
     to_input(pathfile=os.path.join(os.path.dirname(__file__), 'optic_flow_107.png'),
              to='(invis-east)', name='opticflow', height=len_map(240, img=True), width=len_map(320, img=True)),
     to_Conv("conv1", xlabel=3, ylabel=240, zlabel='~'*8 + str(320),
-            offset="(0,0,0)", to="(0,0,0)",
+            offset="(2,0,0)", to="(invis-east)",
             width=len_map(3), height=len_map(240), depth=len_map(320),
-            caption="Input Optic Flow",
+            # caption="Input Optic Flow",
             fill='{rgb:red,1;black,0.3}'
             ),
 

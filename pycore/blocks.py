@@ -23,8 +23,8 @@ def block_2ConvPool( name, botton, top, s_filer=256, n_filer=64, offset="(1,0,0)
         depth=size[1] - int(size[0]/4), 
         opacity=opacity, ),
     to_connection( 
-        "{}".format( botton ), 
-        "ccr_{}".format( name )
+        "{}-east".format( botton ),
+        "ccr_{}-west".format( name )
         )
     ]
 
@@ -37,8 +37,8 @@ def block_Unconv( name, botton, top, s_filer=256, n_filer=64, offset="(1,0,0)", 
         to_ConvRes( name='ccr_res_c_{}'.format(name), offset="(0,0,0)", to="(ccr_{}-east)".format(name),       s_filer=str(s_filer), n_filer=str(n_filer), width=size[2], height=size[0], depth=size[1], opacity=opacity ),       
         to_Conv(name='{}'.format(top), offset="(0,0,0)", to="(ccr_res_c_{}-east)".format(name), zlabel=str(s_filer), xlabel=str(n_filer), width=size[2], height=size[0], depth=size[1]),
         to_connection( 
-            "{}".format( botton ), 
-            "unpool_{}".format( name ) 
+            "{}-east".format( botton ),
+            "unpool_{}-west".format( name )
             )
     ]
 
@@ -60,8 +60,8 @@ def block_Res( num, name, botton, top, s_filer=256, n_filer=64, offset="(0,0,0)"
             depth=size[1]
             ),
             to_connection( 
-                "{}".format( botton  ), 
-                "{}".format( name ) 
+                "{}-east".format( botton  ),
+                "{}-west".format( name )
                 )
             ]
         botton = name

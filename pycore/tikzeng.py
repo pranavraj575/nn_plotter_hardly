@@ -62,6 +62,7 @@ def to_generic(name, obj='Box',
     :return:
     """
     bounded = ['xlabel', ]
+
     kwargs['name'] = name
     kwargs['caption'] = caption
     kwargs['fill'] = fill
@@ -153,14 +154,15 @@ def to_Pool(name,
             height=32, width=1, depth=32,
             opacity=0.5,
             caption=" ",
+            fill=r'\PoolColor',
             **kwargs,
             ):
     return to_generic(name, obj='Box',
                       offset=offset, to=to,
-                      fill=r'\PoolColor',
                       width=width, height=height, depth=depth,
                       caption=caption,
                       opacity=opacity,
+                      fill=fill,
                       **kwargs,
                       )
 
@@ -263,7 +265,7 @@ def to_Sum(name,
 
 def to_connection(of, to):
     return r"""
-\draw [connection]  (""" + of + r"""-east)    -- node {\midarrow} (""" + to + """-west);
+\draw [connection]  (""" + of + r""")    -- node {\midarrow} (""" + to + """);
 """
 
 
