@@ -38,10 +38,11 @@ def to_begin():
 
 # layers definition
 
-def to_input(pathfile, to='(-3,0,0)', width=8, height=8, name="temp"):
+def to_input(pathfile, to='(-3,0,0)', width=8, height=8, name="temp", invert=False):
     return r"""
-\node[canvas is zy plane at x=0] (""" + name + """) at """ + to + r""" {\includegraphics[width=""" + str(
-        width) + "cm" + """,height=""" + str(height) + "cm" + """]{""" + pathfile + """}};
+\node[canvas is zy plane at x=0] (""" + name + """) at """ + to + " {" + (
+        r'\scalebox{-1}[1]{' if invert else '') + r"""\includegraphics[width=""" + str(
+        width) + "cm" + """,height=""" + str(height) + "cm" + """]{""" + pathfile + ("}" if invert else "") + """}};
 """
 
 
