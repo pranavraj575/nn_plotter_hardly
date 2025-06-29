@@ -18,7 +18,7 @@ def len_map(dim, img=False):
 shift = 3.9
 p = .5
 goal_vec_len = 4
-initial_img_channels = 6
+initial_img_channels = 3
 q = 1 - p
 keys = ('front', 'bottom')
 # keys=('front',)
@@ -118,7 +118,7 @@ arch = [
            to_connection("concat" + 'front' + '-neareast', "linear" + '-west'),
 
            to_Conv("output", zlabel=2,
-                   offset="(2,0,0)", to="(linear-east)",
+                   offset="(1.5,0,0)", to="(linear-east)",
                    width=len_map(0), height=len_map(0), depth=len_map(2),
                    caption='Output',
                    # caption="\\hspace{-20 pt}\mbox{Output}",

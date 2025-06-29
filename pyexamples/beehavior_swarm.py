@@ -14,7 +14,7 @@ def len_map(dim, img=False):
     return np.clip(factor*np.power(dim, .5)*1.5, 1, 69)
 
 
-initial_img_channels = 6
+initial_img_channels = 3
 
 # defined your arch
 arch = [
@@ -45,7 +45,7 @@ arch = [
             ),
     to_dotted_diags('conv1', 'pool1'),
     to_ConvConvRelu("conv2", xlabel=16, ylabel=19, zlabel='~'*4 + str(26),
-                    offset="(2,0,0)", to="(pool1-east)",
+                    offset="(1.25,0,0)", to="(pool1-east)",
                     width=len_map(16), height=len_map(19), depth=len_map(26),
                     caption="{CNN+ReLU}",
                     ),
@@ -75,7 +75,7 @@ arch = [
     to_connection("flatten-east", "linear-west"),
 
     to_Conv("output", zlabel=2,
-            offset="(2,0,0)", to="(linear-east)",
+            offset="(1.5,0,0)", to="(linear-east)",
             width=len_map(0), height=len_map(0), depth=len_map(2),
             caption='Output',
             # caption="\\hspace{-20 pt}\mbox{Output}",
