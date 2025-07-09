@@ -264,9 +264,13 @@ def to_Sum(name,
                       )
 
 
-def to_connection(of, to):
+def to_connection(of, to, no_head=False):
+    """
+    :param no_head: no arrowhead
+    :return:
+    """
     return r"""
-\draw [connection]  (""" + of + r""")    -- node {\midarrow} (""" + to + """);
+\draw [connection]  (""" + of + r""")    -- node {""" + ('' if no_head else "\\midarrow") + """} (""" + to + """);
 """
 
 
