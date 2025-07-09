@@ -48,7 +48,7 @@ arch = [
     to_ConvConvRelu("conv2", xlabel=16, ylabel=19, zlabel='~'*4 + str(26),
                     offset="(1.3,0,0)", to="(pool1-east)",
                     width=len_map(16), height=len_map(19), depth=len_map(26),
-                    caption="{CNN+ReLU}",
+                    caption="{CNN}",
                     ),
     to_connection("pool1-east", "conv2-west"),
 
@@ -71,7 +71,7 @@ arch = [
     to_ConvConvRelu("linear", zlabel='~'*8 + str(64),
                     offset="(1,0,0)", to="(flatten-east)",
                     width=len_map(0), height=len_map(0), depth=len_map(64),
-                    caption="{Linear+Tanh}",
+                    caption="{Linear}",
                     ),
     to_connection("flatten-east", "linear-west"),
 
