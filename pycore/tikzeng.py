@@ -73,6 +73,8 @@ def to_generic(name, obj='Box',
     kwargs['xlabel'] = xlabel
     kwargs['ylabel'] = ylabel
     kwargs['zlabel'] = zlabel
+    if invisible:
+        kwargs['opacity'] = 0
     s = r"""
 \pic[shift={""" + offset + "}," + ('draw=none,opacity=0,' if invisible else '') + "] at " + to + """
     {""" + obj + """={
@@ -96,6 +98,7 @@ def to_Conv(name,
             depth=40, caption=" ",
             fill=r'\ConvColor',
             invisible=False,
+            opacity=.420,
             **kwargs,
             ):
     return to_generic(name=name,
@@ -110,6 +113,7 @@ def to_Conv(name,
                       depth=depth,
                       caption=caption,
                       invisible=invisible,
+                      opacity=opacity,
                       **kwargs,
                       )
 
@@ -121,6 +125,7 @@ def to_ConvConvRelu(name,
                     offset="(0,0,0)", to="(0,0,0)",
                     height=40, width=2, depth=40,
                     caption=" ",
+                    opacity=.420,
                     **kwargs,
                     ):
     if type(width) != tuple:
@@ -145,6 +150,7 @@ def to_ConvConvRelu(name,
                       caption=caption,
                       fill=r'\ConvColor',
                       bandfill=r'\ConvReluColor',
+                      opacity=opacity,
                       **kwargs,
                       )
 
@@ -153,7 +159,7 @@ def to_ConvConvRelu(name,
 def to_Pool(name,
             offset="(0,0,0)", to="(0,0,0)",
             height=32, width=1, depth=32,
-            opacity=0.5,
+            opacity=0.420,
             caption=" ",
             fill=r'\PoolColor',
             **kwargs,
@@ -169,7 +175,7 @@ def to_Pool(name,
 
 
 # unpool4,
-def to_UnPool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32, opacity=0.5, caption=" "):
+def to_UnPool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32, opacity=0.420, caption=" "):
     return r"""
 \pic[shift={ """ + offset + """ }] at """ + to + """ 
     {Box={
@@ -185,7 +191,8 @@ def to_UnPool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32
 """
 
 
-def to_ConvRes(name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=6, height=40, depth=40, opacity=0.2,
+def to_ConvRes(name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=6, height=40, depth=40,
+               opacity=0.420,
                caption=" "):
     return r"""
 \pic[shift={ """ + offset + """ }] at """ + to + """ 
@@ -227,7 +234,7 @@ def to_SoftMax(name,
                s_filer=10,
                offset="(0,0,0)", to="(0,0,0)",
                height=3, width=1.5, depth=25,
-               opacity=0.8,
+               opacity=0.420,
                caption=" ",
                **kwargs, ):
     return to_generic(name=name,
@@ -249,7 +256,7 @@ def to_SoftMax(name,
 def to_Sum(name,
            offset="(0,0,0)", to="(0,0,0)",
            radius=2.5,
-           opacity=0.6,
+           opacity=0.420,
            **kwargs,
            ):
     return to_generic(name=name,
